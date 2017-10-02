@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {
@@ -33,6 +33,7 @@ import { XLargeDirective } from './home/x-large';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
+import {CourtComponent} from './court/court.component';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -55,6 +56,7 @@ type StoreType = {
     AppComponent,
     AboutComponent,
     HomeComponent,
+    CourtComponent,
     NoContentComponent,
     XLargeDirective
   ],
@@ -76,7 +78,8 @@ type StoreType = {
    */
   providers: [
     ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    Title
   ]
 })
 export class AppModule {
