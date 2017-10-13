@@ -1,0 +1,19 @@
+<div id="header-nav-menu" class="flex-container"
+     fxLayout="row"
+     fxLayoutAlign="space-between end">
+  <a routerLink="/">
+    <img src="assets/images/ystlc-logo.png"/>
+  </a>
+  <span class="fill-space"></span>
+  <button md-button [mdMenuTriggerFor]="manageMenu">Manage</button>
+  <md-menu #manageMenu="mdMenu">
+    <button md-menu-item routerLink="/court">Court</button>
+    <button md-menu-item>Municipality</button>
+    <button md-menu-item>Judge</button>
+  </md-menu>
+  <button md-button [mdMenuTriggerFor]="reportsMenu">Reports</button>
+  <md-menu #reportsMenu="mdMenu">
+    <button md-menu-item>Text Messaging</button>
+    <button md-menu-item>Google Analytics</button>
+  </md-menu>
+</div>
