@@ -1,0 +1,19 @@
+<div class="judge-component">
+  <mat-form-field class="remove-chip-underlines">
+    <mat-label>Judges</mat-label>
+    <mat-chip-list #chipList class="mat-chip-list-stacked" aria-orientation="vertical" selectable="false">
+      <mat-chip *ngFor="let judge of judges" selected="true" color="accent"(remove)="remove(judge)" (click)="edit(judge)">
+        {{judge.judge}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-form-field>
+  <mat-form-field class="ff-for-chip-list" floatLabel="never">
+    <mat-label>Add Judge Name</mat-label>
+    <input matInput
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           matChipInputAddOnBlur="true"
+           (matChipInputTokenEnd)="add($event)" />
+  </mat-form-field>
+</div>

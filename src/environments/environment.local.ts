@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  readBaseUrl: 'http://test.admin.yourstlcourts.com/admin-api'
+  readBaseUrl: 'http://localhost:8080/admin-api'
 };
 
 // https://stackoverflow.com/questions/40424199/angular-2-testing-process-env

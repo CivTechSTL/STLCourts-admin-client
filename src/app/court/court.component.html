@@ -1,2 +1,73 @@
-<md-toolbar color="primary">
-</md-toolbar>
+<mat-toolbar color="primary">
+  <span>Manage Courts</span>
+  <span class="fill-remaining-space"></span>
+  <span fxLayout="row" fxLayoutGap="10px">
+    <mat-icon matTooltip="Add new court" (click)="addCourt()" class="clickable">add</mat-icon>
+    <mat-icon matTooltip="Edit existing court" (click)="editCourt()" class="clickable">edit</mat-icon>
+    <mat-icon matTooltip="Delete existing court" (click)="deleteCourt()" class="clickable">delete</mat-icon>
+  </span>
+</mat-toolbar>
+
+<div class="form-container" fxLayoutAlign="center" *ngIf="showCourtSelector">
+    <form>
+      <mat-form-field>
+        <input matInput placeholder="select court" [formControl]="courtCtrl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCourtSelected($event)">
+          <mat-option *ngFor="let court of filteredCourts | async" [value]="court.name">
+            <span>{{ court.name }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+</div>
+
+<div class="form-container input-form" fxLayoutAlign="center" *ngIf="showCourtForm">
+  <form fxLayout="column">
+    <mat-form-field floatPlaceholder="always">
+      <input name="name" matInput placeholder="Court Name" required [(ngModel)]="court.name">
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="phone" matInput placeholder="Phone #" [(ngModel)]="court.phone">
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="extension" matInput placeholder="Extension" [(ngModel)]="court.extension">
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="website" matInput placeholder="Website" [(ngModel)]="court.website">
+    </mat-form-field>
+    <app-judge [judges]="court.judges"></app-judge>
+    <mat-form-field floatPlaceholder="always">
+      <input name="address" matInput placeholder="Address" [(ngModel)]="court.address" required>
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="city" matInput placeholder="City" [(ngModel)]="court.city" required>
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="state" matInput placeholder="State" [(ngModel)]="court.state" required>
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="zipcode" matInput placeholder="Zipcode" [(ngModel)]="court.zipCode" required>
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="latitude" matInput placeholder="Latitude" [(ngModel)]="court.latitude" required>
+    </mat-form-field>
+    <mat-form-field floatPlaceholder="always">
+      <input name="longitude" matInput placeholder="Longitude" [(ngModel)]="court.longitude" required>
+    </mat-form-field>
+    <div fxLayout="column" fxLayoutGap="5px">
+      <span>Days citations are shown in system after citation marked closed.</span>
+      <mat-radio-group name="citationExpireRG" [(ngModel)]="citationDoesNotExpire" fxLayout="column" fxLayoutGap="5px">
+        <mat-radio-button [value]=true>always shown</mat-radio-button>
+        <mat-radio-button [value]=false fxFlexAlign="baseline">
+          hidden after:
+          <mat-form-field id="daysUntilCitationExpiresFF" class="input-in-radio-button" fxFlexAlign="baseline">
+            <input name="daysUntilCitationExpires" matInput placeholder="days" type="number" disabled="{{citationDoesNotExpire}}" [(ngModel)]="daysUntilCitationExpires">
+          </mat-form-field>
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end">
+      <button mat-raised-button class="form-button" (click)="saveForm()" color="primary">Save</button>
+    </div>
+  </form>
+</div>

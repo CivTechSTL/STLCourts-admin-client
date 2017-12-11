@@ -1,5 +1,11 @@
 export class Judge {
-  id: string;
+  id: number;
   judge: string;
-  court_id: string;
+  courtId: number;
+
+  constructor(judgeName: string) {
+    this.judge = judgeName;
+    this.id = null;
+    this.courtId = null;
+  }
 }

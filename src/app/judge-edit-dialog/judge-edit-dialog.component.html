@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Edit Judge Name</h2>
+
+<mat-dialog-content>
+  <mat-form-field>
+    <input #judgeName matInput placeholder="Judge's Name" [value]="data.name">
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="judgeName.value">OK</button>
+
+  <button
+    mat-raised-button
+    color="secondary"
+    mat-dialog-close>Cancel</button>
+
+</mat-dialog-actions>

@@ -1,0 +1,65 @@
+.form-button{
+  width: 100px;
+}
+
+#daysUntilCitationExpiresFF{
+  width:50px !important;
+}
+
+.judge-component mat-chip,
+.judge-component .mat-input-underline,
+.judge-component input,
+.judge-component .ff-for-chip-list mat-label{
+  width:300px !important;
+  margin-left:20px !important;
+}
+
+.judge-component .remove-chip-underlines .mat-input-underline,
+.judge-component .remove-chip-underlines .mat-input-subscript-wrapper{
+  display:none;
+}
+
+.ff-for-chip-list{
+  margin-top:-30px;
+}
+
+/* default sizes */
+@media screen and (min-width: 560px) {
+  .input-form form {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .input-form mat-form-field {
+    width: 500px;
+  }
+
+  .judge-component mat-chip mat-icon {
+    float: right;
+  }
+}
+@media screen and (max-width: 559px) {
+  .input-form{
+    width: 80%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .input-form form{
+    width: auto;
+  }
+
+  .input-form mat-form-field {
+    width: 100%;
+  }
+
+  .judge-component mat-chip,
+  .judge-component .mat-input-underline,
+  .judge-component input,
+  .judge-component .ff-for-chip-list mat-label{
+    width:90% !important;
+    margin-left:10% !important;
+  }
+}
+

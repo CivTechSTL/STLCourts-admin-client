@@ -10,9 +10,9 @@ export class Court {
   paymentSystem: string;
   city: string;
   state: string;
-  zip: string;
+  zipCode: string;
   latitude: number;
   longitude: number;
   judges: Judge[];
-  citationExpires: number;
+  citationExpiresAfterDays: number;
 }
