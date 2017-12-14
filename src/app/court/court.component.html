@@ -8,6 +8,10 @@
   </span>
 </mat-toolbar>
 
+<div fxLayoutAlign="center" *ngIf="showPageMessage">
+  <h2>{{pageMessage}}</h2>
+</div>
+
 <div class="form-container" fxLayoutAlign="center" *ngIf="showCourtSelector">
     <form>
       <mat-form-field>
@@ -24,7 +28,7 @@
 <div class="form-container input-form" fxLayoutAlign="center" *ngIf="showCourtForm">
   <form #courtForm="ngForm" fxLayout="column">
     <mat-form-field floatPlaceholder="always">
-      <input name="name" #name="ngModel" matInput placeholder="Court Name" required [(ngModel)]="court.name" pattern="^(\w)+[ ](Court|Division)$">
+      <input name="name" #name="ngModel" matInput placeholder="Court Name" required [(ngModel)]="court.name" pattern="^(\w+\s)+(Court|Division)$">
       <mat-error *ngIf="name.invalid">Court name is required and must end with the word "Court" or "Division"</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">

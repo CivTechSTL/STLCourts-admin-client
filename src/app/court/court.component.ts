@@ -24,24 +24,29 @@ export class CourtComponent implements OnInit {
   daysUntilCitationExpires: number;
   showCourtForm: boolean;
   showCourtSelector: boolean;
+  showPageMessage: boolean;
   courtCtrl: FormControl = new FormControl();
   filteredCourts: Observable<any[]>;
   court: Court;
   courts: Court[];
   judges: Judge[];
+  pageMessage: String = '';
 
   addCourt() {
+    this.showPageMessage = false;
     this.showCourtForm = true;
     this.showCourtSelector = false;
   }
 
   editCourt() {
     this.assignFilterCourts();
+    this.showPageMessage = false;
     this.showCourtForm = false;
     this.showCourtSelector = true;
   }
 
   deleteCourt() {
+    this.showPageMessage = false;
     this.showCourtForm = false;
     this.showCourtSelector = true;
   }
@@ -53,8 +58,10 @@ export class CourtComponent implements OnInit {
       this.court.citationExpiresAfterDays = this.daysUntilCitationExpires;
     }
     this.courtService.save(this.court).subscribe((court) => {
-      const currentCourtIndex = this.courts.indexOf(this.court);
-      this.courts[currentCourtIndex] = court[0];
+      this.pageMessage = court.name + ' saved';
+      this.showPageMessage = true;
+      this.showCourtForm = false;
+      this.showCourtSelector = false;
     });
   }
 

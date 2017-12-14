@@ -23,11 +23,11 @@ export class CourtsService {
     //  .catch(this.handleError);
   }
 
-  public save(court: Court): Observable<Court[]> {
+  public save(court: Court): Observable<Court> {
     return this.http
       .post(environment.readBaseUrl + '/courts', court )
       .map(response => {
-        return <Array<Court>>response;
+        return <Court>response;
       });
     //  .catch(this.handleError);
   }
