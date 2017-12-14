@@ -16,10 +16,12 @@ import {JudgeEditDialogComponent} from '../judge-edit-dialog/judge-edit-dialog.c
 })
 export class JudgeComponent implements OnInit {
   @Input() judges: Judge[];
+  newJudgeValid: boolean;
 
   separatorKeysCodes = [ENTER];
 
   add(event: MatChipInputEvent): void {
+    this.newJudgeValid = true;
     const input = event.input;
     const value = event.value.trim();
 
@@ -29,14 +31,17 @@ export class JudgeComponent implements OnInit {
       if (this.isUniqueJudge(judgeName)) {
         const j = new Judge(judgeName);
         this.judges.push(j);
+        input.value = '';
       }else {
-        alert('Not Unique');
+        this.newJudgeValid = false;
+
+        // alert('Not Unique');
       }
     }
 
-    if (input) {
+   /* if (input) {
       input.value = '';
-    }
+    } */
   }
 
   remove(judge: Judge): void {

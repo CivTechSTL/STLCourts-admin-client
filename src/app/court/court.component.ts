@@ -4,7 +4,8 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-import {MatAutocompleteSelectedEvent} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatRadioChange} from '@angular/material';
+
 import _ from 'lodash';
 import {Court} from '../models/court';
 import { CourtsService } from '../services/courts.service';
@@ -35,6 +36,7 @@ export class CourtComponent implements OnInit {
   }
 
   editCourt() {
+    this.assignFilterCourts();
     this.showCourtForm = false;
     this.showCourtSelector = true;
   }
@@ -47,13 +49,20 @@ export class CourtComponent implements OnInit {
   saveForm() {
     if (this.citationDoesNotExpire === true) {
       this.court.citationExpiresAfterDays = -1;
-    }else{
+    }else {
       this.court.citationExpiresAfterDays = this.daysUntilCitationExpires;
     }
     this.courtService.save(this.court).subscribe((court) => {
       const currentCourtIndex = this.courts.indexOf(this.court);
       this.courts[currentCourtIndex] = court[0];
     });
+  }
+
+  formatPhoneNumber() {
+    // formats a 10 digit phone number to use just '.' as the separation character
+    this.court.phone = this.court.phone.replace(/[- .()]/g, '');
+    this.court.phone = this.court.phone.slice(0, 6) + '.' + this.court.phone.slice(6);
+    this.court.phone = this.court.phone.slice(0, 3) + '.' + this.court.phone.slice(3);
   }
 
   private assignCourts(): void {
@@ -77,12 +86,21 @@ export class CourtComponent implements OnInit {
     this.showCourtSelector = false;
   }
 
+  onExpiresChange(event: MatRadioChange) {
+    if (event.value === true) {
+      this.daysUntilCitationExpires = null;
+    }
+  }
+
   constructor(private courtService: CourtsService) {
     this.assignCourts();
+    this.assignFilterCourts();
+  }
+
+  assignFilterCourts() {
     this.filteredCourts = this.courtCtrl.valueChanges
       .startWith(null)
       .map(court => court ? this.filterCourts(court) : this.courts.slice());
-
   }
 
   filterCourts(name: string) {

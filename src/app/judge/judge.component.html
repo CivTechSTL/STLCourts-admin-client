@@ -1,3 +1,4 @@
+<form>
 <div class="judge-component">
   <mat-form-field class="remove-chip-underlines">
     <mat-label>Judges</mat-label>
@@ -14,6 +15,8 @@
            [matChipInputFor]="chipList"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
            matChipInputAddOnBlur="true"
-           (matChipInputTokenEnd)="add($event)" />
+           (matChipInputTokenEnd)="add($event)"
+    />
   </mat-form-field>
 </div>
+</form>

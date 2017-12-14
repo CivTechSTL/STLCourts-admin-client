@@ -22,46 +22,57 @@
 </div>
 
 <div class="form-container input-form" fxLayoutAlign="center" *ngIf="showCourtForm">
-  <form fxLayout="column">
+  <form #courtForm="ngForm" fxLayout="column">
     <mat-form-field floatPlaceholder="always">
-      <input name="name" matInput placeholder="Court Name" required [(ngModel)]="court.name">
+      <input name="name" #name="ngModel" matInput placeholder="Court Name" required [(ngModel)]="court.name" pattern="^(\w)+[ ](Court|Division)$">
+      <mat-error *ngIf="name.invalid">Court name is required and must end with the word "Court" or "Division"</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="phone" matInput placeholder="Phone #" [(ngModel)]="court.phone">
+      <input name="phone" #phone="ngModel" matInput placeholder="Phone #" [(ngModel)]="court.phone" pattern="^[(]?(\d){3}[-.)]?[ ]?(\d){3}[-.]?(\d){4}$" (blur)="formatPhoneNumber()">
+      <mat-error *ngIf="phone.invalid">Phone number must be 10 digits.</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="extension" matInput placeholder="Extension" [(ngModel)]="court.extension">
+      <input name="extension" #extension="ngModel" matInput placeholder="Extension" [(ngModel)]="court.extension" pattern="^(\d)*$">
+      <span matPrefix>x</span>
+      <mat-error *ngIf="extension.invalid">Extension must be numbers</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
       <input name="website" matInput placeholder="Website" [(ngModel)]="court.website">
     </mat-form-field>
     <app-judge [judges]="court.judges"></app-judge>
     <mat-form-field floatPlaceholder="always">
-      <input name="address" matInput placeholder="Address" [(ngModel)]="court.address" required>
+      <input name="address" #address="ngModel" matInput placeholder="Address" [(ngModel)]="court.address" required>
+      <mat-error *ngIf="address.invalid">Address is required</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="city" matInput placeholder="City" [(ngModel)]="court.city" required>
+      <input name="city" #city="ngModel" matInput placeholder="City" [(ngModel)]="court.city" required>
+      <mat-error *ngIf="city.invalid">City is required</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="state" matInput placeholder="State" [(ngModel)]="court.state" required>
+      <input name="state" #state="ngModel" matInput placeholder="State" [(ngModel)]="court.state" required>
+      <mat-error *ngIf="state.invalid">State is required</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="zipcode" matInput placeholder="Zipcode" [(ngModel)]="court.zipCode" required>
+      <input name="zipcode" #zipcode="ngModel" matInput placeholder="Zipcode" [(ngModel)]="court.zipCode" required>
+      <mat-error *ngIf="zipcode.invalid">Zip Code is required</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="latitude" matInput placeholder="Latitude" [(ngModel)]="court.latitude" required>
+      <input name="latitude" #latitude="ngModel" matInput placeholder="Latitude" [(ngModel)]="court.latitude" required>
+      <mat-error *ngIf="latitude.invalid">Latitude is required</mat-error>
     </mat-form-field>
     <mat-form-field floatPlaceholder="always">
-      <input name="longitude" matInput placeholder="Longitude" [(ngModel)]="court.longitude" required>
+      <input name="longitude" #longitude="ngModel" matInput placeholder="Longitude" [(ngModel)]="court.longitude" required>
+      <mat-error *ngIf="longitude.invalid">Longitude is required</mat-error>
     </mat-form-field>
     <div fxLayout="column" fxLayoutGap="5px">
       <span>Days citations are shown in system after citation marked closed.</span>
-      <mat-radio-group name="citationExpireRG" [(ngModel)]="citationDoesNotExpire" fxLayout="column" fxLayoutGap="5px">
+      <mat-radio-group name="citationExpireRG" [(ngModel)]="citationDoesNotExpire" (change)="onExpiresChange($event)" fxLayout="column" fxLayoutGap="5px">
         <mat-radio-button [value]=true>always shown</mat-radio-button>
         <mat-radio-button [value]=false fxFlexAlign="baseline">
           hidden after:
           <mat-form-field id="daysUntilCitationExpiresFF" class="input-in-radio-button" fxFlexAlign="baseline">
-            <input name="daysUntilCitationExpires" matInput placeholder="days" type="number" disabled="{{citationDoesNotExpire}}" [(ngModel)]="daysUntilCitationExpires">
+            <input name="daysUntilCitationExpires" #days="ngModel" matInput placeholder="days" type="text" disabled="{{citationDoesNotExpire}}" [(ngModel)]="daysUntilCitationExpires" pattern="^([0]|[1-9]+(\d)*)$">
+            <mat-error *ngIf="days.invalid">Days must be numeric</mat-error>
           </mat-form-field>
         </mat-radio-button>
       </mat-radio-group>
