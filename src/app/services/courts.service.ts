@@ -20,7 +20,6 @@ export class CourtsService {
       .map(response => {
         return <Array<Court>>response;
       });
-    //  .catch(this.handleError);
   }
 
   public save(court: Court): Observable<Court> {
@@ -29,6 +28,9 @@ export class CourtsService {
       .map(response => {
         return <Court>response;
       });
-    //  .catch(this.handleError);
+  }
+
+  public delete(id: any): void {
+    this.http.delete(environment.readBaseUrl + '/courts/' + id).subscribe();
   }
 }

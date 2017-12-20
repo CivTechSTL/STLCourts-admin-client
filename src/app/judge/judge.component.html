@@ -1,6 +1,6 @@
 <form>
   <div class="judge-component">
-    <mat-form-field class="remove-chip-underlines">
+    <mat-form-field class="remove-chip-underlines" floatPlaceholder="always">
       <mat-label>Judges</mat-label>
       <mat-chip-list #chipList class="mat-chip-list-stacked" aria-orientation="vertical" selectable="false">
         <mat-chip *ngFor="let judge of judges" selected="true" color="accent"(remove)="remove(judge)">

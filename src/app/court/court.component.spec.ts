@@ -5,7 +5,7 @@ import { CourtComponent } from './court.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {
   MatIconModule, MatInputModule, MatToolbarModule, MatAutocompleteModule,
-  MatRadioModule
+  MatRadioModule, MatDialog
 } from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/Rx';
@@ -16,6 +16,15 @@ import {CourtsService} from '../services/courts.service';
 import {Court} from '../models/court';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {Judge} from '../models/judge';
+import * as _ from 'lodash';
+import {assertNotNull} from '@angular/compiler/src/output/output_ast';
+
+enum PageAction {
+  NONE,
+  ADD,
+  EDIT,
+  DELETE
+}
 
 @Component({selector: 'app-judge', template: ''})
 class JudgesStubComponent { @Input() judges: Judge[]; }
@@ -51,6 +60,21 @@ describe('CourtComponent', () => {
       return new Observable(observer => {
         observer.next(court);
       });
+    },
+    delete: function(id: any) {
+    }
+  };
+
+  const matDialogStub = {
+    open: function(){},
+    close: function() {}
+  };
+
+  const mockMatDialogRefConfirm = {
+    afterClosed: function(){
+      return new Observable(observer => {
+        observer.next(true);
+      });
     }
   };
 
@@ -60,7 +84,8 @@ describe('CourtComponent', () => {
       imports: [BrowserAnimationsModule, FormsModule, MatInputModule, MatIconModule, MatToolbarModule, MatFormFieldModule,
                 ReactiveFormsModule, MatAutocompleteModule, MatRadioModule],
       declarations: [ CourtComponent, JudgesStubComponent ],
-      providers: [{provide: CourtsService, useValue: courtsServiceStub}]
+      providers: [{provide: CourtsService, useValue: courtsServiceStub},
+                  {provide: MatDialog, useValue: matDialogStub}]
     })
     .compileComponents();
   }));
@@ -95,6 +120,10 @@ describe('CourtComponent', () => {
     el.click();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
+      expect(component.court.id).toBeNull();
+      expect(component.currentAction).toBe(PageAction.ADD);
+      expect(component.court.citationExpiresAfterDays).toBe(-1);
+      expect(component.citationDoesNotExpire).toBeTruthy();
       expect(component.showPageMessage).toBeFalsy();
       expect(component.showCourtForm).toBeTruthy();
       expect(component.showCourtSelector).toBeFalsy();
@@ -107,6 +136,9 @@ describe('CourtComponent', () => {
     el.click();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
+      expect(component.currentAction).toBe(PageAction.EDIT);
+      expect(component.courtSelectorPlaceholder).toEqual('Select court to be edited');
+      expect(component.courtCtrl.value).toBe('');
       expect(component.showPageMessage).toBeFalsy();
       expect(component.showCourtForm).toBeFalsy();
       expect(component.showCourtSelector).toBeTruthy();
@@ -119,6 +151,9 @@ describe('CourtComponent', () => {
     el.click();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
+      expect(component.currentAction).toBe(PageAction.DELETE);
+      expect(component.courtSelectorPlaceholder).toEqual('Select court to be deleted');
+      expect(component.courtCtrl.value).toBe('');
       expect(component.showPageMessage).toBeFalsy();
       expect(component.showCourtForm).toBeFalsy();
       expect(component.showCourtSelector).toBeTruthy();
@@ -141,6 +176,24 @@ describe('CourtComponent', () => {
     });
   }));
 
+  it( 'correctly saves and adds court new court', async( () => {
+    component.showCourtForm = true;
+    fixture.detectChanges();
+    component.court = createCourt(null, 'created court');
+    de = fixture.debugElement.query(By.css('#saveButton'));
+    el = de.nativeElement;
+    el.click();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.pageMessage).toEqual('created court saved');
+      expect(component.showPageMessage).toBeTruthy();
+      expect(component.showCourtForm).toBeFalsy();
+      expect(component.showCourtSelector).toBeFalsy();
+      const newCourt = _.find(component.courts, {'name': 'created court'});
+      expect(newCourt.name).toEqual('created court');
+    });
+  }));
+
   it('correctly formats phone number', () => {
     component.court.phone = '(314) 222-6666';
     component.formatPhoneNumber();
@@ -148,6 +201,7 @@ describe('CourtComponent', () => {
   });
 
   it( 'correctly selects the court', async( () => {
+    component.currentAction = PageAction.EDIT;
     component.showCourtSelector = true;
     fixture.detectChanges();
 
@@ -165,6 +219,34 @@ describe('CourtComponent', () => {
       expect(component.showCourtSelector).toBeFalsy();
     });
   }));
+
+  it( 'should delete court', () => {
+    spyOn(component.dialog, 'open').and.callFake(() => {
+      return mockMatDialogRefConfirm;
+    });
+
+    component.currentAction = PageAction.DELETE;
+    component.showCourtSelector = true;
+    fixture.detectChanges();
+
+    const inputde = fixture.debugElement.query(By.css('#selectCourtInput'));
+    inputde.triggerEventHandler('focusin', null);
+    fixture.detectChanges();
+
+    fixture.whenStable().then( () => {
+      de = fixture.debugElement.query(By.css('mat-option'));
+      el = de.nativeElement;
+      el.click();
+      fixture.detectChanges();
+      expect(component.pageMessage).toBe(court1.name + ' was removed');
+      expect(component.courts.length).toBe(1);
+      expect (component.courts[0].name).toEqual(court2.name);
+      expect(component.showPageMessage).toBeTruthy();
+      expect(component.showCourtForm).toBeFalsy();
+      expect(component.showCourtSelector).toBeFalsy();
+      expect(component.currentAction).toBe(PageAction.NONE);
+    });
+  });
 
   it( 'sets and resets daysUntilCitationExpires when radio group chages', () => {
     const court3 = createCourt(20, 'Third Court');

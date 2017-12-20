@@ -4,13 +4,21 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
-import {MatAutocompleteSelectedEvent, MatRadioChange} from '@angular/material';
+import {MatAutocompleteSelectedEvent, MatDialog, MatRadioChange} from '@angular/material';
 
 import * as _ from 'lodash';
 import {Court} from '../models/court';
 import { CourtsService } from '../services/courts.service';
 import {JudgeComponent} from '../judge/judge.component';
 import {Judge} from '../models/judge';
+import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
+
+enum PageAction {
+  NONE,
+  ADD,
+  EDIT,
+  DELETE
+}
 
 @Component({
   selector: 'app-court',
@@ -31,24 +39,37 @@ export class CourtComponent implements OnInit {
   courts: Court[];
   judges: Judge[];
   pageMessage: String = '';
+  currentAction: PageAction = PageAction.NONE;
+  courtSelectorPlaceholder: String = '';
 
   addCourt() {
+    this.court = new Court();
+    this.court.citationExpiresAfterDays = -1;
+    this.citationDoesNotExpire = true;
+    this.currentAction = PageAction.ADD;
     this.showPageMessage = false;
     this.showCourtForm = true;
     this.showCourtSelector = false;
   }
 
   editCourt() {
+    this.currentAction = PageAction.EDIT;
     this.assignFilterCourts();
+    this.courtSelectorPlaceholder = 'Select court to be edited';
     this.showPageMessage = false;
     this.showCourtForm = false;
     this.showCourtSelector = true;
+    this.courtCtrl.setValue('');
   }
 
   deleteCourt() {
+    this.currentAction = PageAction.DELETE;
+    this.assignFilterCourts();
+    this.courtSelectorPlaceholder = 'Select court to be deleted';
     this.showPageMessage = false;
     this.showCourtForm = false;
     this.showCourtSelector = true;
+    this.courtCtrl.setValue('');
   }
 
   saveForm() {
@@ -62,14 +83,21 @@ export class CourtComponent implements OnInit {
       this.showPageMessage = true;
       this.showCourtForm = false;
       this.showCourtSelector = false;
+      this.currentAction = PageAction.NONE;
+
+      if (this.court.id == null) {
+        this.courts.push(court);
+      }
     });
   }
 
   formatPhoneNumber() {
     // formats a 10 digit phone number to use just '.' as the separation character
-    this.court.phone = this.court.phone.replace(/[- .()]/g, '');
-    this.court.phone = this.court.phone.slice(0, 6) + '.' + this.court.phone.slice(6);
-    this.court.phone = this.court.phone.slice(0, 3) + '.' + this.court.phone.slice(3);
+    if (this.court.phone !== '') {
+      this.court.phone = this.court.phone.replace(/[- .()]/g, '');
+      this.court.phone = this.court.phone.slice(0, 6) + '.' + this.court.phone.slice(6);
+      this.court.phone = this.court.phone.slice(0, 3) + '.' + this.court.phone.slice(3);
+    }
   }
 
   private assignCourts(): void {
@@ -82,16 +110,37 @@ export class CourtComponent implements OnInit {
 
   onCourtSelected(event: MatAutocompleteSelectedEvent) {
     this.court = _.find(this.courts, {'name': event.option.value});
-    this.citationDoesNotExpire = (this.court.citationExpiresAfterDays === -1);
-    if (!this.citationDoesNotExpire) {
-     this.daysUntilCitationExpires = this.court.citationExpiresAfterDays;
-    }else {
-      this.daysUntilCitationExpires = null;
-    }
 
-    this.showPageMessage = false;
-    this.showCourtForm = true;
-    this.showCourtSelector = false;
+    switch ( this.currentAction ) {
+      case PageAction.DELETE:
+        const index = this.courts.indexOf(this.court);
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          width: '250px',
+          data: {message: 'Remove \'' + this.court.name + '\'? This will remove the court from the database permanently.' }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result === true) {
+            this.courtService.delete(this.court.id);
+            this.removeCourtFromArray(index);
+            this.resetPageView();
+            this.pageMessage = this.court.name + ' was removed';
+            this.showPageMessage = true;
+          }
+        });
+        break;
+      case PageAction.EDIT:
+        this.citationDoesNotExpire = (this.court.citationExpiresAfterDays === -1);
+        if (!this.citationDoesNotExpire) {
+          this.daysUntilCitationExpires = this.court.citationExpiresAfterDays;
+        }else {
+          this.daysUntilCitationExpires = null;
+        }
+
+        this.resetPageView();
+        this.showCourtForm = true;
+        break;
+    }
   }
 
   onExpiresChange(event: MatRadioChange) {
@@ -100,7 +149,7 @@ export class CourtComponent implements OnInit {
     }
   }
 
-  constructor(private courtService: CourtsService) {
+  constructor(public dialog: MatDialog, private courtService: CourtsService) {
     this.assignCourts();
     this.assignFilterCourts();
   }
@@ -116,10 +165,21 @@ export class CourtComponent implements OnInit {
       court.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
   }
 
-  ngOnInit() {
+  private removeCourtFromArray(index: number): void {
+    if (index >= 0) {
+      this.courts.splice(index, 1);
+    }
+  }
+
+  private resetPageView(): void {
+    this.currentAction = PageAction.NONE;
     this.showPageMessage = false;
     this.showCourtForm = false;
     this.showCourtSelector = false;
+  }
+
+  ngOnInit() {
+    this.resetPageView();
     this.court = new Court();
   }
 }

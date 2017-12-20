@@ -15,7 +15,7 @@
 <div class="form-container" fxLayoutAlign="center" *ngIf="showCourtSelector">
     <form>
       <mat-form-field>
-        <input id="selectCourtInput" matInput placeholder="select court" [formControl]="courtCtrl" [matAutocomplete]="auto">
+        <input id="selectCourtInput" matInput [placeholder]="courtSelectorPlaceholder" [formControl]="courtCtrl" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCourtSelected($event)">
           <mat-option *ngFor="let court of filteredCourts | async" [value]="court.name">
             <span>{{ court.name }}</span>

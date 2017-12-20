@@ -56,6 +56,15 @@ describe('CourtsService', () => {
     req.flush(dummyCourtData);
   });
 
+  it('should delete', () => {
+    const idToDelete = '4';
+
+    service.delete(idToDelete);
+
+    const req = httpMock.expectOne(environment.readBaseUrl + '/courts/' + idToDelete);
+    expect(req.request.method).toBe('DELETE');
+  });
+
   afterEach(() => {
     httpMock.verify();
   });
