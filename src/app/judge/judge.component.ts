@@ -2,8 +2,8 @@ import {Component, Input, Inject, OnInit} from '@angular/core';
 import {Judge} from '../models/judge';
 import {MatChipInputEvent} from '@angular/material';
 import {ENTER} from '@angular/cdk/keycodes';
-import _ from 'lodash';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import * as _ from 'lodash';
+import {MatDialog} from '@angular/material';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import {JudgesService} from '../services/judges.service';
 import {JudgeEditDialogComponent} from '../judge-edit-dialog/judge-edit-dialog.component';
@@ -14,9 +14,9 @@ import {JudgeEditDialogComponent} from '../judge-edit-dialog/judge-edit-dialog.c
   templateUrl: './judge.component.html',
   styleUrls: ['./judge.component.scss']
 })
-export class JudgeComponent implements OnInit {
+export class JudgeComponent {
   @Input() judges: Judge[];
-  newJudgeValid: boolean;
+  newJudgeValid = true;
 
   separatorKeysCodes = [ENTER];
 
@@ -34,14 +34,8 @@ export class JudgeComponent implements OnInit {
         input.value = '';
       }else {
         this.newJudgeValid = false;
-
-        // alert('Not Unique');
       }
     }
-
-   /* if (input) {
-      input.value = '';
-    } */
   }
 
   remove(judge: Judge): void {
@@ -68,7 +62,7 @@ export class JudgeComponent implements OnInit {
   edit(judge: Judge): void {
     const dialogRef = this.dialog.open(JudgeEditDialogComponent, {
       width: '250px',
-      data: {name: judge.judge}
+      data: {judge: judge, judges: this.judges}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -89,8 +83,5 @@ export class JudgeComponent implements OnInit {
   }
 
   constructor(public dialog: MatDialog, private judgesService: JudgesService) {}
-
-  ngOnInit() {
-  }
 
 }

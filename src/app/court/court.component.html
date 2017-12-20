@@ -2,9 +2,9 @@
   <span>Manage Courts</span>
   <span class="fill-remaining-space"></span>
   <span fxLayout="row" fxLayoutGap="10px">
-    <mat-icon matTooltip="Add new court" (click)="addCourt()" class="clickable">add</mat-icon>
-    <mat-icon matTooltip="Edit existing court" (click)="editCourt()" class="clickable">edit</mat-icon>
-    <mat-icon matTooltip="Delete existing court" (click)="deleteCourt()" class="clickable">delete</mat-icon>
+    <mat-icon id="addCourtIcon" matTooltip="Add new court" (click)="addCourt()" class="clickable">add</mat-icon>
+    <mat-icon id="editCourtIcon" matTooltip="Edit existing court" (click)="editCourt()" class="clickable">edit</mat-icon>
+    <mat-icon id="deleteCourtIcon" matTooltip="Delete existing court" (click)="deleteCourt()" class="clickable">delete</mat-icon>
   </span>
 </mat-toolbar>
 
@@ -15,7 +15,7 @@
 <div class="form-container" fxLayoutAlign="center" *ngIf="showCourtSelector">
     <form>
       <mat-form-field>
-        <input matInput placeholder="select court" [formControl]="courtCtrl" [matAutocomplete]="auto">
+        <input id="selectCourtInput" matInput placeholder="select court" [formControl]="courtCtrl" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onCourtSelected($event)">
           <mat-option *ngFor="let court of filteredCourts | async" [value]="court.name">
             <span>{{ court.name }}</span>
@@ -71,8 +71,8 @@
     <div fxLayout="column" fxLayoutGap="5px">
       <span>Days citations are shown in system after citation marked closed.</span>
       <mat-radio-group name="citationExpireRG" [(ngModel)]="citationDoesNotExpire" (change)="onExpiresChange($event)" fxLayout="column" fxLayoutGap="5px">
-        <mat-radio-button [value]=true>always shown</mat-radio-button>
-        <mat-radio-button [value]=false fxFlexAlign="baseline">
+        <mat-radio-button id="shownTrueRB" [value]=true>always shown</mat-radio-button>
+        <mat-radio-button id="shownFalseRB" [value]=false fxFlexAlign="baseline">
           hidden after:
           <mat-form-field id="daysUntilCitationExpiresFF" class="input-in-radio-button" fxFlexAlign="baseline">
             <input name="daysUntilCitationExpires" #days="ngModel" matInput placeholder="days" type="text" disabled="{{citationDoesNotExpire}}" [(ngModel)]="daysUntilCitationExpires" pattern="^([0]|[1-9]+(\d)*)$">
@@ -82,7 +82,7 @@
       </mat-radio-group>
     </div>
     <div fxLayout="row" fxLayoutAlign="end">
-      <button mat-raised-button class="form-button" (click)="saveForm()" color="primary">Save</button>
+      <button id="saveButton" mat-raised-button class="form-button" (click)="saveForm()" color="primary">Save</button>
     </div>
   </form>
 </div>

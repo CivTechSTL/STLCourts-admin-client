@@ -5,12 +5,12 @@
     <img src="assets/images/ystlc-logo.png"/>
   </a>
   <span class="fill-space"></span>
-  <button mat-button [matMenuTriggerFor]="manageMenu">Manage</button>
+  <button id="manageButton" mat-button [matMenuTriggerFor]="manageMenu">Manage</button>
   <mat-menu #manageMenu="matMenu">
     <button mat-menu-item routerLink="/court">Court</button>
     <button mat-menu-item>Municipality</button>
   </mat-menu>
-  <button mat-button [matMenuTriggerFor]="reportsMenu">Reports</button>
+  <button id="reportsButton" mat-button [matMenuTriggerFor]="reportsMenu">Reports</button>
   <mat-menu #reportsMenu="matMenu">
     <button mat-menu-item>Text Messaging</button>
     <button mat-menu-item>Google Analytics</button>

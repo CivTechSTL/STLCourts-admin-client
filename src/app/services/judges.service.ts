@@ -14,15 +14,6 @@ export class JudgesService {
   constructor(private http: HttpClient) {
   }
 
-  public getAll(): Observable<Judge[]> {
-    return this.http
-      .get(environment.readBaseUrl + '/admin-api/judges/court/')
-      .map(response => {
-        return <Array<Judge>>response;
-      });
-    //  .catch(this.handleError);
-  }
-
   public delete(id: any): void {
     this.http.delete(environment.readBaseUrl + '/judges/' + id).subscribe();
   }

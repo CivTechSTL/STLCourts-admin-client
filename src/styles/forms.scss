@@ -9,7 +9,8 @@
 .judge-component mat-chip,
 .judge-component .mat-input-underline,
 .judge-component input,
-.judge-component .ff-for-chip-list mat-label{
+.judge-component .ff-for-chip-list mat-label,
+.judge-component .custom-warn-judge{
   width:300px !important;
   margin-left:20px !important;
 }
@@ -17,6 +18,15 @@
 .judge-component .remove-chip-underlines .mat-input-underline,
 .judge-component .remove-chip-underlines .mat-input-subscript-wrapper{
   display:none;
+}
+
+.judge-component .custom-warn-judge{
+  margin-top: -20px;
+}
+
+.mat-chip .mat-chip-edit-icon .mat-icon{
+  font-size:18px;
+  color:white;
 }
 
 .ff-for-chip-list{
@@ -57,7 +67,8 @@
   .judge-component mat-chip,
   .judge-component .mat-input-underline,
   .judge-component input,
-  .judge-component .ff-for-chip-list mat-label{
+  .judge-component .ff-for-chip-list mat-label
+  .judge-component .custom-warn-judge{
     width:90% !important;
     margin-left:10% !important;
   }

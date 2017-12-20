@@ -34,3 +34,15 @@ app-footer{
  Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+.primary {
+  color: mat-color($stlcourt-app-primary);
+}
+
+.accent {
+  color: mat-color($stlcourt-app-accent);
+}
+
+.warn {
+  color: mat-color($stlcourt-app-warn);
+}

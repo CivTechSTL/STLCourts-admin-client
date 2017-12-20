@@ -6,7 +6,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {MatAutocompleteSelectedEvent, MatRadioChange} from '@angular/material';
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 import {Court} from '../models/court';
 import { CourtsService } from '../services/courts.service';
 import {JudgeComponent} from '../judge/judge.component';
@@ -89,6 +89,7 @@ export class CourtComponent implements OnInit {
       this.daysUntilCitationExpires = null;
     }
 
+    this.showPageMessage = false;
     this.showCourtForm = true;
     this.showCourtSelector = false;
   }
@@ -116,6 +117,7 @@ export class CourtComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showPageMessage = false;
     this.showCourtForm = false;
     this.showCourtSelector = false;
     this.court = new Court();

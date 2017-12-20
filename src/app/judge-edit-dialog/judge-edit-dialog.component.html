@@ -1,9 +1,10 @@
 <h2 mat-dialog-title>Edit Judge Name</h2>
 
 <mat-dialog-content>
-  <mat-form-field>
-    <input #judgeName matInput placeholder="Judge's Name" [value]="data.name">
+  <mat-form-field [ngClass]="{'warn':!judgeNameOK}">
+    <input matInput placeholder="Judge's Name" [(ngModel)]="judgeName">
   </mat-form-field>
+  <p *ngIf="!judgeNameOK" class="warn">Judge name is not unique</p>
 </mat-dialog-content>
 
 <mat-dialog-actions>
@@ -11,7 +12,7 @@
   <button
     mat-raised-button
     color="primary"
-    [mat-dialog-close]="judgeName.value">OK</button>
+    (click)="checkJudgeName()">OK</button>
 
   <button
     mat-raised-button
