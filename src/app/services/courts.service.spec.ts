@@ -37,7 +37,7 @@ describe('CourtsService', () => {
       expect(courts[0].name).toEqual('One Court');
     });
 
-    const req = httpMock.expectOne(environment.readBaseUrl + '/courts');
+    const req = httpMock.expectOne(environment.baseUrl + '/courts');
     expect(req.request.method).toBe('GET');
     req.flush(dummyCourtData);
   });
@@ -51,7 +51,7 @@ describe('CourtsService', () => {
       expect(court.name).toEqual('One Court');
     });
 
-    const req = httpMock.expectOne(environment.readBaseUrl + '/courts');
+    const req = httpMock.expectOne(environment.baseUrl + '/courts');
     expect(req.request.method).toBe('POST');
     req.flush(dummyCourtData);
   });
@@ -61,7 +61,7 @@ describe('CourtsService', () => {
 
     service.delete(idToDelete);
 
-    const req = httpMock.expectOne(environment.readBaseUrl + '/courts/' + idToDelete);
+    const req = httpMock.expectOne(environment.baseUrl + '/courts/' + idToDelete);
     expect(req.request.method).toBe('DELETE');
   });
 

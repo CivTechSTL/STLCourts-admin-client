@@ -15,6 +15,6 @@ export class JudgesService {
   }
 
   public delete(id: any): void {
-    this.http.delete(environment.readBaseUrl + '/judges/' + id).subscribe();
+    this.http.delete(environment.baseUrl + '/judges/' + id).subscribe();
   }
 }

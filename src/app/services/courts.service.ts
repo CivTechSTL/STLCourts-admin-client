@@ -16,7 +16,7 @@ export class CourtsService {
 
   public getAll(): Observable<Court[]> {
     return this.http
-      .get(environment.readBaseUrl + '/courts')
+      .get(environment.baseUrl + '/courts')
       .map(response => {
         return <Array<Court>>response;
       });
@@ -24,13 +24,13 @@ export class CourtsService {
 
   public save(court: Court): Observable<Court> {
     return this.http
-      .post(environment.readBaseUrl + '/courts', court )
+      .post(environment.baseUrl + '/courts', court )
       .map(response => {
         return <Court>response;
       });
   }
 
   public delete(id: any): void {
-    this.http.delete(environment.readBaseUrl + '/courts/' + id).subscribe();
+    this.http.delete(environment.baseUrl + '/courts/' + id).subscribe();
   }
 }

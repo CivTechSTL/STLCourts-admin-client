@@ -6,7 +6,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import {MatAutocompleteSelectedEvent, MatDialog, MatRadioChange} from '@angular/material';
 
-import * as _ from 'lodash';
+import {find} from 'lodash';
 import {Court} from '../models/court';
 import { CourtsService } from '../services/courts.service';
 import {JudgeComponent} from '../judge/judge.component';
@@ -41,6 +41,11 @@ export class CourtComponent implements OnInit {
   pageMessage: String = '';
   currentAction: PageAction = PageAction.NONE;
   courtSelectorPlaceholder: String = '';
+
+  constructor(public dialog: MatDialog, private courtService: CourtsService) {
+    this.assignCourts();
+    this.assignFilterCourts();
+  }
 
   addCourt() {
     this.court = new Court();
@@ -109,7 +114,7 @@ export class CourtComponent implements OnInit {
   }
 
   onCourtSelected(event: MatAutocompleteSelectedEvent) {
-    this.court = _.find(this.courts, {'name': event.option.value});
+    this.court = find(this.courts, {'name': event.option.value});
 
     switch ( this.currentAction ) {
       case PageAction.DELETE:
@@ -120,7 +125,7 @@ export class CourtComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-          if (result === true) {
+          if (result) {
             this.courtService.delete(this.court.id);
             this.removeCourtFromArray(index);
             this.resetPageView();
@@ -144,14 +149,9 @@ export class CourtComponent implements OnInit {
   }
 
   onExpiresChange(event: MatRadioChange) {
-    if (event.value === true) {
+    if (event.value) {
       this.daysUntilCitationExpires = null;
     }
-  }
-
-  constructor(public dialog: MatDialog, private courtService: CourtsService) {
-    this.assignCourts();
-    this.assignFilterCourts();
   }
 
   assignFilterCourts() {

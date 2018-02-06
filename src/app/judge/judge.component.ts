@@ -2,7 +2,7 @@ import {Component, Input, Inject, OnInit} from '@angular/core';
 import {Judge} from '../models/judge';
 import {MatChipInputEvent} from '@angular/material';
 import {ENTER} from '@angular/cdk/keycodes';
-import * as _ from 'lodash';
+import { find } from 'lodash';
 import {MatDialog} from '@angular/material';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 import {JudgesService} from '../services/judges.service';
@@ -79,7 +79,7 @@ export class JudgeComponent {
   }
 
   private isUniqueJudge(newJudge: string): boolean {
-    return (_.find(this.judges, {judge: newJudge})) ? false : true;
+    return (find(this.judges, {judge: newJudge})) ? false : true;
   }
 
   constructor(public dialog: MatDialog, private judgesService: JudgesService) {}

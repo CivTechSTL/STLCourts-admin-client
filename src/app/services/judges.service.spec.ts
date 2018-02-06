@@ -30,7 +30,7 @@ describe('JudgesService', () => {
 
     service.delete(idToDelete);
 
-    const req = httpMock.expectOne(environment.readBaseUrl + '/judges/' + idToDelete);
+    const req = httpMock.expectOne(environment.baseUrl + '/judges/' + idToDelete);
     expect(req.request.method).toBe('DELETE');
   });
 
