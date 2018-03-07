@@ -23,6 +23,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import {JudgesService} from './services/judges.service';
 import { JudgeEditDialogComponent } from './judge-edit-dialog/judge-edit-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { GoogleSigninComponent } from './google-signin/google-signin.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FooterComponent } from './footer/footer.component';
     JudgeComponent,
     ConfirmDialogComponent,
     JudgeEditDialogComponent,
-    FooterComponent
+    FooterComponent,
+    GoogleSigninComponent
   ],
   imports: [
     BrowserModule,
