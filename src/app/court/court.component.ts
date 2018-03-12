@@ -43,8 +43,6 @@ export class CourtComponent implements OnInit {
   courtSelectorPlaceholder: String = '';
 
   constructor(public dialog: MatDialog, private courtService: CourtsService) {
-    this.assignCourts();
-    this.assignFilterCourts();
   }
 
   addCourt() {
@@ -138,7 +136,7 @@ export class CourtComponent implements OnInit {
         this.citationDoesNotExpire = (this.court.citationExpiresAfterDays === -1);
         if (!this.citationDoesNotExpire) {
           this.daysUntilCitationExpires = this.court.citationExpiresAfterDays;
-        }else {
+        } else {
           this.daysUntilCitationExpires = null;
         }
 
@@ -179,6 +177,9 @@ export class CourtComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.assignCourts();
+    this.assignFilterCourts();
+
     this.resetPageView();
     this.court = new Court();
   }
