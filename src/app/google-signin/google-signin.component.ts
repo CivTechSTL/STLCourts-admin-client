@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
+import {ApiGoogleSignInService} from '../services/api-google-sign-in.service';
 declare const gapi: any;
 
 @Component({
@@ -13,12 +14,14 @@ export class GoogleSigninComponent implements AfterViewInit {
   private scope = [
     'profile',
     'email',
-    'https://www.googleapis.com/auth/plus.me',
-    'https://www.googleapis.com/auth/contacts.readonly',
-    'https://www.googleapis.com/auth/admin.directory.user.readonly'
   ].join(' ');
 
   public auth2: any;
+
+  constructor(private element: ElementRef, private apiGoogleSignInService: ApiGoogleSignInService) {
+    console.log('ElementRef: ', this.element);
+  }
+
   public googleInit() {
     const self = this;
     gapi.load('auth2', function () {
@@ -31,25 +34,24 @@ export class GoogleSigninComponent implements AfterViewInit {
     });
   }
   public attachSignin(element) {
+    const self = this;
     this.auth2.attachClickHandler(element, {},
       function (googleUser) {
 
         const profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        const token = googleUser.getAuthResponse().id_token;
+        console.log('Token || ' + token);
         console.log('ID: ' + profile.getId());
         console.log('Name: ' + profile.getName());
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail());
         // YOUR CODE HERE
+        self.apiGoogleSignInService.googleSignIn(token).subscribe(jwtToken => console.log('JWT Token: ' + jwtToken));
 
 
       }, function (error) {
         console.log(JSON.stringify(error, undefined, 2));
       });
-  }
-
-  constructor(private element: ElementRef) {
-    console.log('ElementRef: ', this.element);
   }
 
   ngAfterViewInit() {

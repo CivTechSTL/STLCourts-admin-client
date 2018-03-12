@@ -24,6 +24,7 @@ import {JudgesService} from './services/judges.service';
 import { JudgeEditDialogComponent } from './judge-edit-dialog/judge-edit-dialog.component';
 import { FooterComponent } from './footer/footer.component';
 import { GoogleSigninComponent } from './google-signin/google-signin.component';
+import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { GoogleSigninComponent } from './google-signin/google-signin.component';
   ],
   providers: [
     CourtsService,
-    JudgesService
+    JudgesService,
+    ApiGoogleSignInService
   ],
   bootstrap: [AppComponent]
 })
