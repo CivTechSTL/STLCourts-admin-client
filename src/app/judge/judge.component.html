@@ -1,0 +1,26 @@
+<form>
+  <div class="judge-component">
+    <mat-form-field class="remove-chip-underlines" floatPlaceholder="always">
+      <mat-label>Judges</mat-label>
+      <mat-chip-list #chipList class="mat-chip-list-stacked" aria-orientation="vertical" selectable="false">
+        <mat-chip *ngFor="let judge of judges" selected="true" color="accent"(remove)="remove(judge)">
+          {{judge.judge}}
+          <mat-icon matChipRemove>close</mat-icon>
+          <a href="#" class="mat-chip-edit-icon" (click)="edit(judge)">
+            <mat-icon>edit</mat-icon>
+          </a>
+        </mat-chip>
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-form-field class="ff-for-chip-list" [ngClass]="{'warn':!newJudgeValid}" floatLabel="never">
+      <mat-label>Add Judge Name</mat-label>
+      <input id="addJudgeInput" matInput
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             matChipInputAddOnBlur="true"
+             (matChipInputTokenEnd)="add($event)"
+      />
+    </mat-form-field>
+    <p *ngIf="!newJudgeValid" class="warn custom-warn-judge">Judge name is not unique</p>
+  </div>
+</form>

@@ -1,0 +1,15 @@
+.form-container{
+  margin-top:20px;
+}
+
+.input-in-radio-button{
+  margin-left: 5px;
+}
+
+.clickable{
+  cursor: pointer;
+}
+
+#daysUntilCitationExpiresFF{
+  width:50px !important;
+}

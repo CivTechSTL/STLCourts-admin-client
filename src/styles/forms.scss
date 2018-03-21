@@ -1,0 +1,33 @@
+.form-button{
+  width: 100px;
+}
+
+
+/* default sizes */
+@media screen and (min-width: 560px) {
+  .input-form form {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .input-form mat-form-field {
+    width: 500px;
+  }
+}
+@media screen and (max-width: 559px) {
+  .input-form{
+    width: 80%;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
+  .input-form form{
+    width: auto;
+  }
+
+  .input-form mat-form-field {
+    width: 100%;
+  }
+}
+

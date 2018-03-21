@@ -1,7 +1,7 @@
 import {Judge} from './judge';
 
 export class Court {
-  id: string;
+  id: number;
   name: string;
   phone: string;
   website: string;
@@ -10,9 +10,26 @@ export class Court {
   paymentSystem: string;
   city: string;
   state: string;
-  zip: string;
+  zipCode: string;
   latitude: number;
   longitude: number;
   judges: Judge[];
-  citationExpires: number;
+  citationExpiresAfterDays: number
+
+  constructor() {
+    this.id = null;
+    this.name = '';
+    this.phone = '';
+    this.website = '';
+    this.extension = '';
+    this.address = '';
+    this.paymentSystem = '';
+    this.city = '';
+    this.state = '';
+    this.zipCode = '';
+    this.latitude = null;
+    this.longitude = null;
+    this.judges = [];
+    this.citationExpiresAfterDays = -1;
+  }
 }
