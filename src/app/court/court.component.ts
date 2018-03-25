@@ -78,7 +78,7 @@ export class CourtComponent implements OnInit {
   saveForm() {
     if (this.citationDoesNotExpire === true) {
       this.court.citationExpiresAfterDays = -1;
-    }else {
+    } else {
       this.court.citationExpiresAfterDays = this.daysUntilCitationExpires;
     }
     this.courtService.save(this.court).subscribe((court) => {

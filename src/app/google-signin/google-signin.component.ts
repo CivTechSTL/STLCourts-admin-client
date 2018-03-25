@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
 import {ApiGoogleSignInService} from '../services/api-google-sign-in.service';
+import {JwtService} from '../services/jwt.service';
 declare const gapi: any;
 
 @Component({
@@ -18,7 +19,7 @@ export class GoogleSigninComponent implements AfterViewInit {
 
   public auth2: any;
 
-  constructor(private element: ElementRef, private apiGoogleSignInService: ApiGoogleSignInService) {
+  constructor(private element: ElementRef, private apiGoogleSignInService: ApiGoogleSignInService, private jwtService: JwtService) {
     console.log('ElementRef: ', this.element);
   }
 
@@ -46,7 +47,12 @@ export class GoogleSigninComponent implements AfterViewInit {
         console.log('Image URL: ' + profile.getImageUrl());
         console.log('Email: ' + profile.getEmail());
         // YOUR CODE HERE
-        self.apiGoogleSignInService.googleSignIn(token).subscribe(jwtToken => console.log('JWT Token: ' + jwtToken));
+        self.apiGoogleSignInService.googleSignIn(token).subscribe(jwtResponse => {
+          self.jwtService.setToken(jwtResponse['token']);
+          self.jwtService.setRefreshToken(jwtResponse['refreshToken']);
+          }
+        );
+        // self.apiGoogleSignInService.googleSignIn(token).subscribe(jwtToken => console.log('JWT Token: ' + jwtToken));
 
 
       }, function (error) {

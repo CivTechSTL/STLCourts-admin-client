@@ -9,7 +9,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import { FlexLayoutModule} from '@angular/flex-layout';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { CourtsService } from './services/courts.service';
 
 
@@ -25,6 +25,10 @@ import { JudgeEditDialogComponent } from './judge-edit-dialog/judge-edit-dialog.
 import { FooterComponent } from './footer/footer.component';
 import { GoogleSigninComponent } from './google-signin/google-signin.component';
 import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
+import { JwtService} from './services/jwt.service';
+
+import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
+
 
 @NgModule({
   declarations: [
@@ -62,6 +66,12 @@ import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
     JudgeEditDialogComponent
   ],
   providers: [
+    JwtService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtHttpInterceptor,
+      multi: true
+    },
     CourtsService,
     JudgesService,
     ApiGoogleSignInService

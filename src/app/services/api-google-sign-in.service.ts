@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
-import {Court} from '../models/court';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
+import {TokenResponse} from '../models/tokenResponse';
 
 @Injectable()
 export class ApiGoogleSignInService {
-
   constructor(private http: HttpClient) {
   }
 
-  public googleSignIn(idToken: string): Observable<String> {
+  public googleSignIn(idToken: string): Observable<TokenResponse> {
     return this.http
       .post(environment.baseUrl + '/googleSignin', {token: idToken} )
       .map(response => {
-        return <String>response;
+        return <TokenResponse>response;
       });
   }
 
