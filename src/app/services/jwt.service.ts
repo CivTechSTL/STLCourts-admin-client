@@ -3,24 +3,24 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class JwtService {
 
-  token: String = null;
-  refreshToken: String = null;
+  token: string = null;
+  refreshToken: string = null;
 
   constructor() { }
 
-  public setToken(token: String): void {
+  public setToken(token: string): void {
     this.token = token;
   }
 
-  public getToken(): String {
+  public getToken(): string {
     return this.token;
   }
 
-  public setRefreshToken(token: String): void {
+  public setRefreshToken(token: string): void {
     this.refreshToken = token;
   }
 
-  public getRefreshToken(): String {
+  public getRefreshToken(): string {
     return this.refreshToken;
   }
 

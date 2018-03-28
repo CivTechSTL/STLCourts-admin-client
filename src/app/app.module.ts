@@ -26,6 +26,7 @@ import { FooterComponent } from './footer/footer.component';
 import { GoogleSigninComponent } from './google-signin/google-signin.component';
 import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
 import { JwtService} from './services/jwt.service';
+import { RefreshTokenService} from './services/refresh-token.service';
 
 import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
 
@@ -74,7 +75,8 @@ import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
     },
     CourtsService,
     JudgesService,
-    ApiGoogleSignInService
+    ApiGoogleSignInService,
+    RefreshTokenService
   ],
   bootstrap: [AppComponent]
 })
