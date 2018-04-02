@@ -4,14 +4,17 @@ import { Observable } from 'rxjs/Observable';
 
 import { JwtService } from '../services/jwt.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
+import {TokenResponse} from '../models/tokenResponse';
 
 @Injectable()
 export class JwtHttpInterceptor implements HttpInterceptor {
   constructor(private jwtService: JwtService, private refreshTokenService: RefreshTokenService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    const self = this;
+
     return new Observable<HttpEvent<any>>(subscriber => {
       // first try for the request
-      if (!(req.url.match('(.)*googleSignin(.)*') || req.url.match( '(.)*refreshToken(.)*'))) {
+      if (!(req.url.match('(.)*googleSignin(.)*') && req.url.match( '(.)*refreshToken(.)*'))) {
         req = req.clone({
           headers: req.headers.set('Authorization', 'Bearer ' + this.jwtService.getToken())
         });
@@ -30,10 +33,12 @@ export class JwtHttpInterceptor implements HttpInterceptor {
               console.log('401 error, trying to re-login');
 
               // try to re-log the user
-              this.reLogin().subscribe(authToken => {
+              this.refreshTokenService.refreshToken().subscribe(jwtResponse => {
+                self.jwtService.setToken(jwtResponse['token']);
+                self.jwtService.setRefreshToken(jwtResponse['refreshToken']);
                 // re-login successful -> create new headers with the new auth token
                 const newRequest = req.clone({
-                  headers: req.headers.set('Authorization', authToken)
+                  headers: req.headers.set('Authorization', 'Bearer ' + jwtResponse['token'])
                 });
 
                 // retry the request with the new token
@@ -57,22 +62,6 @@ export class JwtHttpInterceptor implements HttpInterceptor {
           });
     });
 
-  }
-
-  /**
-   * Try to re-login the user.
-   */
-  private reLogin(): Observable<string> {
-    // obtain new authorization token and return it
-    const self = this;
-    return new Observable<string>( subscriber => {
-      console.log('Refreshing Tokens');
-      self.refreshTokenService.refreshToken().subscribe(jwtResponse => {
-        self.jwtService.setToken(jwtResponse['token']);
-        self.jwtService.setRefreshToken(jwtResponse['refreshToken']);
-      });
-      subscriber.next(self.jwtService.getToken());
-    });
   }
 
  /*

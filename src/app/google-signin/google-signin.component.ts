@@ -20,12 +20,14 @@ export class GoogleSigninComponent implements AfterViewInit {
   public auth2: any;
 
   constructor(private element: ElementRef, private apiGoogleSignInService: ApiGoogleSignInService, private jwtService: JwtService) {
-    console.log('ElementRef: ', this.element);
+    // console.log('In constructor, ElementRef: ', this.element);
   }
 
   public googleInit() {
+    // console.log('In google init');
     const self = this;
     gapi.load('auth2', function () {
+      // console.log('In gapi.load');
       self.auth2 = gapi.auth2.init({
         client_id: self.clientId,
         cookiepolicy: 'single_host_origin',
@@ -35,17 +37,18 @@ export class GoogleSigninComponent implements AfterViewInit {
     });
   }
   public attachSignin(element) {
+    // console.log('In Attach Sign in');
     const self = this;
     this.auth2.attachClickHandler(element, {},
       function (googleUser) {
 
         const profile = googleUser.getBasicProfile();
         const token = googleUser.getAuthResponse().id_token;
-        console.log('Token || ' + token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
+       // console.log('Token || ' + token);
+       // console.log('ID: ' + profile.getId());
+       // console.log('Name: ' + profile.getName());
+       // console.log('Image URL: ' + profile.getImageUrl());
+       // console.log('Email: ' + profile.getEmail());
         // YOUR CODE HERE
         self.apiGoogleSignInService.googleSignIn(token).subscribe(jwtResponse => {
           self.jwtService.setToken(jwtResponse['token']);
@@ -56,11 +59,13 @@ export class GoogleSigninComponent implements AfterViewInit {
 
 
       }, function (error) {
+        console.log('In error');
         console.log(JSON.stringify(error, undefined, 2));
       });
   }
 
   ngAfterViewInit() {
+    // console.log('In ngAfterViewInit');
     this.googleInit();
   }
 
