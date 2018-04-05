@@ -1,19 +1,16 @@
-<div id="header-nav-menu" class="flex-container"
+<div id="header-nav-menu"
      fxLayout="row"
      fxLayoutAlign="space-between end">
   <a routerLink="/">
     <img src="assets/images/ystlc-logo.png"/>
   </a>
   <span class="fill-space"></span>
-  <div class="flex-container"
-       fxLayout="column">
-    <div class="flex-container"
-         fxLayout="row"
+  <div id="headerLoginAndMenu" fxLayout="column">
+    <div fxLayout="row"
          fxLayoutAlign="center center">
       <app-google-signin></app-google-signin>
     </div>
-    <div class="flex-container"
-         fxLayout="row">
+    <div fxLayout="row" fxLayoutAlign="space-between">
       <button id="manageButton" mat-button [matMenuTriggerFor]="manageMenu">Manage</button>
       <mat-menu #manageMenu="matMenu">
         <button mat-menu-item routerLink="/court">Court</button>

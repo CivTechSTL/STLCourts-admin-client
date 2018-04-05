@@ -27,8 +27,10 @@ import { GoogleSigninComponent } from './google-signin/google-signin.component';
 import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
 import { JwtService} from './services/jwt.service';
 import { RefreshTokenService} from './services/refresh-token.service';
+import { ApiPrivilegesService} from "./services/api-privileges.service";
 
 import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
+import { LoggedInDialogComponent } from './logged-in-dialog/logged-in-dialog.component';
 
 
 @NgModule({
@@ -40,7 +42,8 @@ import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
     ConfirmDialogComponent,
     JudgeEditDialogComponent,
     FooterComponent,
-    GoogleSigninComponent
+    GoogleSigninComponent,
+    LoggedInDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +67,8 @@ import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
   ],
   entryComponents: [
     ConfirmDialogComponent,
-    JudgeEditDialogComponent
+    JudgeEditDialogComponent,
+    LoggedInDialogComponent
   ],
   providers: [
     Title,
@@ -77,7 +81,8 @@ import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
     CourtsService,
     JudgesService,
     ApiGoogleSignInService,
-    RefreshTokenService
+    RefreshTokenService,
+    ApiPrivilegesService
   ],
   bootstrap: [AppComponent]
 })

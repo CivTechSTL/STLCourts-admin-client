@@ -1,14 +1,17 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 import { JwtService } from '../services/jwt.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
-import {TokenResponse} from '../models/tokenResponse';
+import { ApiGoogleSignInService} from '../services/api-google-sign-in.service';
+
 
 @Injectable()
 export class JwtHttpInterceptor implements HttpInterceptor {
-  constructor(private jwtService: JwtService, private refreshTokenService: RefreshTokenService) { }
+  constructor(private jwtService: JwtService,
+              private refreshTokenService: RefreshTokenService,
+              private googleSignInService: ApiGoogleSignInService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const self = this;
 
@@ -61,27 +64,5 @@ export class JwtHttpInterceptor implements HttpInterceptor {
             }
           });
     });
-
   }
-
- /*
-  intercept(req: HttpRequest<any>, next: HttpHandler):
-  Observable<HttpEvent<any>> {
-    if (req.url.match('(.)*googleSignin(.)*')) {
-      return next.handle(req);
-    } else {
-      if (req.url.match( '(.)*refreshToken(.)*')) {
-        return next.handle(req);
-      } else {
-      const authReq = req.clone({
-        headers: req.headers.set('Authorization', 'Bearer ' + this.jwtService.getToken())
-      });
-
-      return next.handle(authReq);
-      }
-    }
-
-  }
-  */
-
 }

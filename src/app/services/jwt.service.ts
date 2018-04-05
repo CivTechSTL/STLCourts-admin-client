@@ -5,6 +5,7 @@ export class JwtService {
 
   token: string = null;
   refreshToken: string = null;
+  userRole: string
 
   constructor() { }
 

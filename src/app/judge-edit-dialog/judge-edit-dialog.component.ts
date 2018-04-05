@@ -19,7 +19,7 @@ export class JudgeEditDialogComponent implements OnInit {
     const judge = find(this.data.judges, {judge: this.judgeName});
     if (judge && (judge !== this.data.judge)) {
       this.judgeNameOK = false;
-    }else {
+    } else {
       this.judgeNameOK = true;
       this.dialogRef.close(this.judgeName);
     }

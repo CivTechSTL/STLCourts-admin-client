@@ -1,1 +1,10 @@
-<button id="googleBtn">Google Sign-In</button>
+<div *ngIf="loggedIn; else loggedOut">
+  <div id="loggedInProfileImageDiv" fxLayout="row" fxLayoutAlign="end">
+    <img id="loggedInProfileImage" src="{{loggedInImage}}" (click)="logOutDialogClicked()">
+  </div>
+</div>
+
+<ng-template #loggedOut>
+  <div id="googleBtn" #googleBtn class="loggedOut"></div>
+</ng-template>
+
