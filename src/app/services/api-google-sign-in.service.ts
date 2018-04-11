@@ -1,16 +1,19 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {TokenResponse} from '../models/tokenResponse';
 
 @Injectable()
-export class ApiGoogleSignInService implements OnInit {
+export class ApiGoogleSignInService {
   private loggedIn: boolean;
   private userName: string;
   private userImage: string;
 
   constructor(private http: HttpClient) {
+    this.loggedIn = false;
+    this.userName = '';
+    this.userImage = '';
   }
 
   public googleSignIn(idToken: string): Observable<TokenResponse> {
@@ -50,11 +53,4 @@ export class ApiGoogleSignInService implements OnInit {
     this.userName = '';
     this.loggedIn = false;
   }
-
-  ngOnInit() {
-    this.loggedIn = false;
-    this.userName = '';
-    this.userImage = '';
-  }
-
 }

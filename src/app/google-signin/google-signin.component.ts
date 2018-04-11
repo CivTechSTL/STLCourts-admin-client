@@ -1,74 +1,34 @@
-import {ChangeDetectorRef, AfterViewInit, Component, ElementRef, ViewChild, NgZone} from '@angular/core';
-import {ApiGoogleSignInService} from '../services/api-google-sign-in.service';
-import {JwtService} from '../services/jwt.service';
+import {Component, NgZone} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {LoggedInDialogComponent} from '../logged-in-dialog/logged-in-dialog.component';
-import {ApiPrivilegesService} from '../services/api-privileges.service';
-
-declare const gapi: any;
-
-// for reference: https://stackoverflow.com/questions/31144874/gapi-is-not-defined-google-sign-in-issue-with-gapi-auth2-init
+import {LogOutDialogComponent} from '../log-out-dialog/log-out-dialog.component';
+import {UserService} from '../services/user.service';
+import {GoogleApiService} from 'ng-gapi';
 
 @Component({
   selector: 'app-google-signin',
   templateUrl: './google-signin.component.html',
   styleUrls: ['./google-signin.component.scss']
 })
-export class GoogleSigninComponent implements AfterViewInit {
-  @ViewChild('googleBtn') googleBtn: ElementRef;
+export class GoogleSigninComponent {
 
-  private clientId = '586136797966-6gdr7aslkoa16l23klro33dkic52dpvp.apps.googleusercontent.com';
+  loggedIn(): boolean {
+    return this.userService.getCurrentUser().isUserLoggedIn();
+  }
 
-  private scope = [
-    'profile',
-    'email',
-  ].join(' ');
+  loggedInImage(): string {
+    return this.userService.getCurrentUser().getUserImageUrl();
+  }
 
-  public auth2: any;
-  loggedIn = false;
-  loggedInImage: string;
-
-  constructor(private element: ElementRef,
-              private apiGoogleSignInService: ApiGoogleSignInService,
-              private privilegeService: ApiPrivilegesService,
-              private jwtService: JwtService,
-              private cdRef: ChangeDetectorRef,
+  constructor(private userService: UserService,
               public dialog: MatDialog,
-              private _ngZone: NgZone) {
+              private _ngZone: NgZone,
+              private gapiService: GoogleApiService) {
+
+    this.gapiService.onLoad().subscribe();
   }
 
-  public googleInit() {
-    const self = this;
-    gapi.load('auth2', function () {
-      self.auth2 = gapi.auth2.init({
-        client_id: self.clientId,
-        cookiepolicy: 'single_host_origin',
-        scope: self.scope
-      });
-      self.attachSignin(self.googleBtn.nativeElement);
-    });
-  }
-  public attachSignin(element) {
-    const self = this;
-    this.auth2.attachClickHandler(element, {},
-      function (googleUser) {
-
-        const profile = googleUser.getBasicProfile();
-        const token = googleUser.getAuthResponse().id_token;
-        self.apiGoogleSignInService.googleSignIn(token).subscribe(jwtResponse => {
-          self.jwtService.setToken(jwtResponse['token']);
-          self.jwtService.setRefreshToken(jwtResponse['refreshToken']);
-          self.apiGoogleSignInService.setUserImage(profile.getImageUrl());
-          self.apiGoogleSignInService.setUserName(profile.getName());
-
-          self.privilegeService.getUserPrivilege().subscribe(userPrivilege => {
-            self.apiGoogleSignInService.setLoggedIn(true);
-            self.setLogin();
-          });
-        });
-      }, function (error) {
-        console.log(JSON.stringify(error, undefined, 2));
-      });
+  public signInWithGoogle() {
+    this.userService.signIn();
   }
 
   logOutDialogClicked(): void {
@@ -76,47 +36,22 @@ export class GoogleSigninComponent implements AfterViewInit {
 
     // see: https://github.com/angular/material2/issues/9676
     this._ngZone.run(() => {
-      dialogRef = this.dialog.open(LoggedInDialogComponent, {
+      dialogRef = this.dialog.open(LogOutDialogComponent, {
         minWidth: '250px',
       });
 
-      dialogRef.updatePosition({ top: '0px', right: '0px' });
+      dialogRef.updatePosition({ top: '20px', right: '20px' });
     });
 
     dialogRef.afterClosed().subscribe(logOut => {
-      if (logOut.logOut) {
-        this.googleSignOut();
-      }
-    },
+        if (logOut.logOut) {
+          this.userService.signOut();
+        }
+      },
       error => {
         console.log(error);
-        this.googleSignOut();
+        this.userService.signOut();
       }
     );
   }
-
-  public setLogin() {
-    this.loggedIn = true;
-    this.loggedInImage = this.apiGoogleSignInService.getUserImage();
-    this.cdRef.detectChanges();
-  }
-
-  public googleSignOut() {
-      const self = this;
-      this.apiGoogleSignInService.clearUser();
-      this.jwtService.clearTokens();
-      this.loggedIn = false;
-      this.cdRef.detectChanges();
-      this.auth2.signOut().then(function () {
-        // allow user to click sign in button again
-        self.privilegeService.clearUserPrivilege();
-        self.googleInit();
-      });
-  }
-
-  ngAfterViewInit() {
-     this.googleInit();
-  }
-
-
 }

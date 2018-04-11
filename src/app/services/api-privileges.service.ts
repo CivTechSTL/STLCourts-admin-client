@@ -1,15 +1,17 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import {UserRole} from '../models/userRole';
 
 @Injectable()
-export class ApiPrivilegesService implements OnInit {
+export class ApiPrivilegesService {
 
   private userPrivilege: UserRole;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.userPrivilege = null;
+  }
 
   public getUserPrivilege(): Observable<UserRole> {
     const self = this;
@@ -30,9 +32,4 @@ export class ApiPrivilegesService implements OnInit {
   public clearUserPrivilege() {
     this.userPrivilege = null;
   }
-
-  ngOnInit() {
-    this.userPrivilege = null;
-  }
-
 }

@@ -12,6 +12,14 @@ import { FlexLayoutModule} from '@angular/flex-layout';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { CourtsService } from './services/courts.service';
 
+import {
+  GoogleApiModule,
+  GoogleApiService,
+  GoogleAuthService,
+  NgGapiClientConfig,
+  NG_GAPI_CONFIG,
+  GoogleApiConfig
+} from 'ng-gapi';
 
 import { AppComponent } from './app.component';
 import { CourtComponent } from './court/court.component';
@@ -26,12 +34,24 @@ import { FooterComponent } from './footer/footer.component';
 import { GoogleSigninComponent } from './google-signin/google-signin.component';
 import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
 import { JwtService} from './services/jwt.service';
+import { UserService} from './services/user.service';
 import { RefreshTokenService} from './services/refresh-token.service';
-import { ApiPrivilegesService} from "./services/api-privileges.service";
-
+import { ApiPrivilegesService} from './services/api-privileges.service';
 import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
-import { LoggedInDialogComponent } from './logged-in-dialog/logged-in-dialog.component';
+import { LogOutDialogComponent } from './log-out-dialog/log-out-dialog.component';
+import { NotLoggedInComponent } from './not-logged-in/not-logged-in.component';
 
+import { UserGuardService} from './services/user-guard.service';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+
+const gapiClientConfig: NgGapiClientConfig = {
+  client_id: '473553693292-s73tvaovrej8gfiijto1mk8ag30g8ck9.apps.googleusercontent.com',
+  discoveryDocs: ['https://analyticsreporting.googleapis.com/$discovery/rest?version=v4'],
+  scope: [
+    'profile',
+    'email'
+  ].join(' ')
+};
 
 @NgModule({
   declarations: [
@@ -43,7 +63,9 @@ import { LoggedInDialogComponent } from './logged-in-dialog/logged-in-dialog.com
     JudgeEditDialogComponent,
     FooterComponent,
     GoogleSigninComponent,
-    LoggedInDialogComponent
+    LogOutDialogComponent,
+    NotLoggedInComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,12 +85,17 @@ import { LoggedInDialogComponent } from './logged-in-dialog/logged-in-dialog.com
     MatRadioModule,
     MatAutocompleteModule,
     FlexLayoutModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig
+    }),
   ],
   entryComponents: [
     ConfirmDialogComponent,
     JudgeEditDialogComponent,
-    LoggedInDialogComponent
+    LogOutDialogComponent,
+    LoginDialogComponent
   ],
   providers: [
     Title,
@@ -78,11 +105,13 @@ import { LoggedInDialogComponent } from './logged-in-dialog/logged-in-dialog.com
       useClass: JwtHttpInterceptor,
       multi: true
     },
+    UserService,
     CourtsService,
     JudgesService,
     ApiGoogleSignInService,
     RefreshTokenService,
-    ApiPrivilegesService
+    ApiPrivilegesService,
+    UserGuardService
   ],
   bootstrap: [AppComponent]
 })
