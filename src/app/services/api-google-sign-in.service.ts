@@ -23,34 +23,4 @@ export class ApiGoogleSignInService {
         return <TokenResponse>response;
       });
   }
-
-  public isLoggedIn(): boolean {
-    return this.loggedIn;
-  }
-
-  public setLoggedIn(loggedIn: boolean): void {
-    this.loggedIn = loggedIn;
-  }
-
-  public setUserName(userName: string): void {
-    this.userName = userName;
-  }
-
-  public getUserName(): string {
-    return this.userName;
-  }
-
-  public setUserImage(userImage: string): void {
-    this.userImage = userImage;
-  }
-
-  public getUserImage(): string {
-    return this.userImage;
-  }
-
-  public clearUser(): void {
-    this.userImage = '';
-    this.userName = '';
-    this.loggedIn = false;
-  }
 }

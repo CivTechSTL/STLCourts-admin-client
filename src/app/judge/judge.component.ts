@@ -32,7 +32,7 @@ export class JudgeComponent {
         const j = new Judge(judgeName);
         this.judges.push(j);
         input.value = '';
-      }else {
+      } else {
         this.newJudgeValid = false;
       }
     }
@@ -54,7 +54,7 @@ export class JudgeComponent {
           this.removeJudgeFromArray(index);
         }
       });
-    }else {
+    } else {
       this.removeJudgeFromArray(index);
     }
   }

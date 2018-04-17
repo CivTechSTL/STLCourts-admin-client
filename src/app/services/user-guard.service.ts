@@ -4,7 +4,7 @@ import {UserService} from './user.service';
 import {UserRole} from '../models/userRole';
 
 @Injectable()
-export class UserGuardService implements CanActivate{
+export class UserGuardService implements CanActivate {
 
   constructor(private userService: UserService, private router: Router) { }
 
@@ -12,11 +12,12 @@ export class UserGuardService implements CanActivate{
     const url: string = state.url;
 
     if (this.userService.getCurrentUser().isUserLoggedIn()  &&
-        UserRole.allowedRoles.indexOf(this.userService.getCurrentUser().getUserRole().role)) {
+      UserRole.allowedRoles.includes(this.userService.getCurrentUser().getUserRole().role)) {
+      // (UserRole.allowedRoles.indexOf(this.userService.getCurrentUser().getUserRole().role) !== -1)) {
       return true;
     } else {
       this.userService.redirectUrl = url;
-      this.router.navigate(['/signin'])
+      this.router.navigate(['/signin']);
       return false;
     }
   }

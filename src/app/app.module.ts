@@ -38,11 +38,11 @@ import { UserService} from './services/user.service';
 import { RefreshTokenService} from './services/refresh-token.service';
 import { ApiPrivilegesService} from './services/api-privileges.service';
 import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
-import { LogOutDialogComponent } from './log-out-dialog/log-out-dialog.component';
 import { NotLoggedInComponent } from './not-logged-in/not-logged-in.component';
 
 import { UserGuardService} from './services/user-guard.service';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '473553693292-s73tvaovrej8gfiijto1mk8ag30g8ck9.apps.googleusercontent.com',
@@ -63,9 +63,9 @@ const gapiClientConfig: NgGapiClientConfig = {
     JudgeEditDialogComponent,
     FooterComponent,
     GoogleSigninComponent,
-    LogOutDialogComponent,
     NotLoggedInComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    LogoutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -94,7 +94,7 @@ const gapiClientConfig: NgGapiClientConfig = {
   entryComponents: [
     ConfirmDialogComponent,
     JudgeEditDialogComponent,
-    LogOutDialogComponent,
+    LogoutDialogComponent,
     LoginDialogComponent
   ],
   providers: [

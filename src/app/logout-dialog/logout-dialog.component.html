@@ -1,9 +1,9 @@
 <mat-dialog-content fxLayout="row">
-  <img id="loggedInDialogProfileImage" src="{{profileImage}}">
-  <div id="loggedInDialogUserInfo" fxLayout="column">
-    <span id="loggedInDialogUserName">{{profileName}}</span>
+  <img id="logoutDialogProfileImage" src="{{profileImage}}">
+  <div id="logoutDialogUserInfo" fxLayout="column">
+    <span id="logoutDialogUserName">{{profileName}}</span>
     <div fxLayout="row" fxLayoutAlign="end">
-      <span id="loggedInDialogUserRole">{{userRole | lowercase}} privileges</span>
+      <span id="logoutDialogUserRole">{{userRole | lowercase}} privileges</span>
     </div>
   </div>
 </mat-dialog-content>
@@ -15,6 +15,7 @@
     mat-dialog-close>Cancel</button>
 
   <button
+    id="logoutDialogLogoutButton"
     mat-raised-button
     color="primary"
     (click)="logOut()">Logout</button>

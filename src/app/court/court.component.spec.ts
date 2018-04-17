@@ -62,16 +62,19 @@ describe('CourtComponent', () => {
       });
     },
     delete: function(id: any) {
+      return new Observable( observer => {
+        observer.next(id);
+      });
     }
   };
 
   const matDialogStub = {
-    open: function(){},
+    open: function() {},
     close: function() {}
   };
 
   const mockMatDialogRefConfirm = {
-    afterClosed: function(){
+    afterClosed: function() {
       return new Observable(observer => {
         observer.next(true);
       });

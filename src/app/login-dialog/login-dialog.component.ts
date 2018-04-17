@@ -1,19 +1,14 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { MatDialogRef} from '@angular/material';
-import {UserService} from '../services/user.service';
-import {LogOutDialogComponent} from '../log-out-dialog/log-out-dialog.component';
+import {LogoutDialogComponent} from '../logout-dialog/logout-dialog.component';
 
 @Component({
   selector: 'app-login-dialog',
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.scss']
 })
-export class LoginDialogComponent implements OnInit {
+export class LoginDialogComponent {
 
-  constructor(
-    public dialogRef: MatDialogRef<LogOutDialogComponent>) { }
-
-  ngOnInit() {
-  }
+  constructor(public dialogRef: MatDialogRef<LogoutDialogComponent>) { }
 
 }

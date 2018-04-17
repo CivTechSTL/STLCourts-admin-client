@@ -12,7 +12,7 @@ import { CourtsService } from '../services/courts.service';
 import {JudgeComponent} from '../judge/judge.component';
 import {Judge} from '../models/judge';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
-import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
+
 
 enum PageAction {
   NONE,

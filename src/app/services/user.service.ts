@@ -7,11 +7,10 @@ import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
 import { Router } from '@angular/router';
 
 import GoogleUser = gapi.auth2.GoogleUser;
-import GoogleAuth = gapi.auth2.GoogleAuth;
 
 
 import { User} from '../models/user';
-import {MatDialog} from "@angular/material";
+import {MatDialog} from '@angular/material';
 
 @Injectable()
 export class UserService {
@@ -43,6 +42,7 @@ export class UserService {
       try {
         auth.signOut();
         this.user.clearUserData();
+        this.privilegeService.clearUserPrivilege();
         this.jwtService.clearTokens();
       } catch (e) {
         console.error(e);
@@ -57,15 +57,15 @@ export class UserService {
       try {
         auth.signOut();
         this.user.clearUserData();
+        this.privilegeService.clearUserPrivilege();
         this.jwtService.clearTokens();
       } catch (e) {
         console.error(e);
       }
 
       // present dialog to allow user to login again
-      const dialogRef = this.dialog.open(LoginDialogComponent, {
-        // width: '250px'
-      });
+      const dialogRef = this.dialog.open(LoginDialogComponent);
+
       dialogRef.afterClosed().subscribe(dialogResult => {
         if (dialogResult) {
           this.signIn();

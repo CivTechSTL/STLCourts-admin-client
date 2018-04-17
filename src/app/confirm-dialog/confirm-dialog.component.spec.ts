@@ -15,7 +15,7 @@ describe('ConfirmDialogComponent', () => {
   let de: DebugElement;
   let el: HTMLElement;
 
-  const mockDialogRef:  Object = {close: function(returnData){}};
+  const mockDialogRef:  Object = {close: function(returnData) {}};
   const dialogData: Object = {message: 'My Message'};
 
   beforeEach(async(() => {

@@ -1,6 +1,6 @@
 import {Component, NgZone} from '@angular/core';
 import {MatDialog} from '@angular/material';
-import {LogOutDialogComponent} from '../log-out-dialog/log-out-dialog.component';
+import {LogoutDialogComponent} from '../logout-dialog/logout-dialog.component';
 import {UserService} from '../services/user.service';
 import {GoogleApiService} from 'ng-gapi';
 
@@ -9,7 +9,15 @@ import {GoogleApiService} from 'ng-gapi';
   templateUrl: './google-signin.component.html',
   styleUrls: ['./google-signin.component.scss']
 })
+
 export class GoogleSigninComponent {
+  constructor(private userService: UserService,
+              public dialog: MatDialog,
+              private _ngZone: NgZone,
+              private gapiService: GoogleApiService) {
+
+    this.gapiService.onLoad().subscribe();
+  }
 
   loggedIn(): boolean {
     return this.userService.getCurrentUser().isUserLoggedIn();
@@ -17,14 +25,6 @@ export class GoogleSigninComponent {
 
   loggedInImage(): string {
     return this.userService.getCurrentUser().getUserImageUrl();
-  }
-
-  constructor(private userService: UserService,
-              public dialog: MatDialog,
-              private _ngZone: NgZone,
-              private gapiService: GoogleApiService) {
-
-    this.gapiService.onLoad().subscribe();
   }
 
   public signInWithGoogle() {
@@ -36,7 +36,7 @@ export class GoogleSigninComponent {
 
     // see: https://github.com/angular/material2/issues/9676
     this._ngZone.run(() => {
-      dialogRef = this.dialog.open(LogOutDialogComponent, {
+      dialogRef = this.dialog.open(LogoutDialogComponent, {
         minWidth: '250px',
       });
 

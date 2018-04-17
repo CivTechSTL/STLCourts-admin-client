@@ -58,7 +58,7 @@ export class User {
     this.loggedIn = loggedIn;
   }
 
-  public isUserLoggedIn(): boolean {  // need to think through this
+  public isUserLoggedIn(): boolean {
     return this.loggedIn;
   }
 
