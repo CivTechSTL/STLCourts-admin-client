@@ -30,7 +30,7 @@ export class CourtsService {
       });
   }
 
-  public delete(id: any): void {
-    this.http.delete(environment.baseUrl + '/courts/' + id).subscribe();
+  public delete(id: any): Observable<any> {
+    return this.http.delete(environment.baseUrl + '/courts/' + id);
   }
 }

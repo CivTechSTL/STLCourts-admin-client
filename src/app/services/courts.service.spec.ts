@@ -59,7 +59,7 @@ describe('CourtsService', () => {
   it('should delete', () => {
     const idToDelete = '4';
 
-    service.delete(idToDelete);
+    service.delete(idToDelete).subscribe();
 
     const req = httpMock.expectOne(environment.baseUrl + '/courts/' + idToDelete);
     expect(req.request.method).toBe('DELETE');

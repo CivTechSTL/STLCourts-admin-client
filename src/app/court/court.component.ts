@@ -13,6 +13,7 @@ import {JudgeComponent} from '../judge/judge.component';
 import {Judge} from '../models/judge';
 import {ConfirmDialogComponent} from '../confirm-dialog/confirm-dialog.component';
 
+
 enum PageAction {
   NONE,
   ADD,
@@ -78,7 +79,7 @@ export class CourtComponent implements OnInit {
   saveForm() {
     if (this.citationDoesNotExpire === true) {
       this.court.citationExpiresAfterDays = -1;
-    }else {
+    } else {
       this.court.citationExpiresAfterDays = this.daysUntilCitationExpires;
     }
     this.courtService.save(this.court).subscribe((court) => {
@@ -91,6 +92,8 @@ export class CourtComponent implements OnInit {
       if (this.court.id == null) {
         this.courts.push(court);
       }
+    }, err => {
+      alert(err.message);
     });
   }
 
@@ -124,11 +127,12 @@ export class CourtComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            this.courtService.delete(this.court.id);
-            this.removeCourtFromArray(index);
-            this.resetPageView();
-            this.pageMessage = this.court.name + ' was removed';
-            this.showPageMessage = true;
+            this.courtService.delete(this.court.id).subscribe( deleteResult => {
+              this.removeCourtFromArray(index);
+              this.resetPageView();
+              this.pageMessage = this.court.name + ' was removed';
+              this.showPageMessage = true;
+            });
           }
         });
         break;

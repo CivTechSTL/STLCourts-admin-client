@@ -32,7 +32,7 @@ describe('JudgeComponent', () => {
   };
 
   const matDialogStub = {
-    open: function(){},
+    open: function() {},
     close: function() {}
   };
 

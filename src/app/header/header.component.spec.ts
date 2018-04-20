@@ -3,8 +3,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HeaderComponent } from './header.component';
 import {MatButtonModule, MatMenuModule} from '@angular/material';
 import {RouterLinkStubDirective} from '../../testing/router-stubs';
-import {DebugElement} from '@angular/core';
+import {Component, DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
+
+
+@Component({selector: 'app-google-signin', template: ''})
+class GoogleSigninStubComponent {}
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -17,7 +21,7 @@ describe('HeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MatButtonModule, MatMenuModule],
-      declarations: [ HeaderComponent, RouterLinkStubDirective ]
+      declarations: [ HeaderComponent, RouterLinkStubDirective, GoogleSigninStubComponent ]
     })
     .compileComponents();
   }));

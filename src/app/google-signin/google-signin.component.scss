@@ -1,0 +1,35 @@
+#googleBtn.loggedOut{
+  width: 191px;
+  height: 46px;
+  background-image: url("/assets/images/btn_google_signin_light_normal_web.png");
+  background-position: center;
+}
+
+#googleBtn.loggedOut:hover{
+  width: 191px;
+  height: 46px;
+  background-image: url("/assets/images/btn_google_signin_light_focus_web.png");
+  background-position: center;
+  cursor: pointer;
+}
+
+#googleBtn.loggedOut:active{
+  width: 191px;
+  height: 46px;
+  background-image: url("/assets/images/btn_google_signin_light_pressed_web.png");
+  background-position: center;
+  cursor: pointer;
+}
+
+#loggedInProfileImageDiv{
+  margin-right: 20px;
+}
+
+#loggedInProfileImage{
+  max-height: 40px;
+  border-radius: 40px;
+}
+
+#loggedInProfileImage:hover{
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, Title} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -9,9 +9,17 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import {MatDialogModule} from '@angular/material/dialog';
 import { FlexLayoutModule} from '@angular/flex-layout';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { CourtsService } from './services/courts.service';
 
+import {
+  GoogleApiModule,
+  GoogleApiService,
+  GoogleAuthService,
+  NgGapiClientConfig,
+  NG_GAPI_CONFIG,
+  GoogleApiConfig
+} from 'ng-gapi';
 
 import { AppComponent } from './app.component';
 import { CourtComponent } from './court/court.component';
@@ -23,6 +31,27 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import {JudgesService} from './services/judges.service';
 import { JudgeEditDialogComponent } from './judge-edit-dialog/judge-edit-dialog.component';
 import { FooterComponent } from './footer/footer.component';
+import { GoogleSigninComponent } from './google-signin/google-signin.component';
+import { ApiGoogleSignInService} from './services/api-google-sign-in.service';
+import { JwtService} from './services/jwt.service';
+import { UserService} from './services/user.service';
+import { RefreshTokenService} from './services/refresh-token.service';
+import { ApiPrivilegesService} from './services/api-privileges.service';
+import {JwtHttpInterceptor} from './interceptors/jwt-http-interceptor';
+import { NotLoggedInComponent } from './not-logged-in/not-logged-in.component';
+
+import { UserGuardService} from './services/user-guard.service';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
+
+const gapiClientConfig: NgGapiClientConfig = {
+  client_id: '473553693292-s73tvaovrej8gfiijto1mk8ag30g8ck9.apps.googleusercontent.com',
+  discoveryDocs: ['https://analyticsreporting.googleapis.com/$discovery/rest?version=v4'],
+  scope: [
+    'profile',
+    'email'
+  ].join(' ')
+};
 
 @NgModule({
   declarations: [
@@ -32,7 +61,11 @@ import { FooterComponent } from './footer/footer.component';
     JudgeComponent,
     ConfirmDialogComponent,
     JudgeEditDialogComponent,
-    FooterComponent
+    FooterComponent,
+    GoogleSigninComponent,
+    NotLoggedInComponent,
+    LoginDialogComponent,
+    LogoutDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,15 +85,33 @@ import { FooterComponent } from './footer/footer.component';
     MatRadioModule,
     MatAutocompleteModule,
     FlexLayoutModule,
-    AppRoutingModule
+    AppRoutingModule,
+    GoogleApiModule.forRoot({
+      provide: NG_GAPI_CONFIG,
+      useValue: gapiClientConfig
+    }),
   ],
   entryComponents: [
     ConfirmDialogComponent,
-    JudgeEditDialogComponent
+    JudgeEditDialogComponent,
+    LogoutDialogComponent,
+    LoginDialogComponent
   ],
   providers: [
+    Title,
+    JwtService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtHttpInterceptor,
+      multi: true
+    },
+    UserService,
     CourtsService,
-    JudgesService
+    JudgesService,
+    ApiGoogleSignInService,
+    RefreshTokenService,
+    ApiPrivilegesService,
+    UserGuardService
   ],
   bootstrap: [AppComponent]
 })
