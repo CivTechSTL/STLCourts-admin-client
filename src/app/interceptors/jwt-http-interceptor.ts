@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { JwtService } from '../services/jwt.service';
 import { RefreshTokenService } from '../services/refresh-token.service';
-import { ApiGoogleSignInService} from '../services/api-google-sign-in.service';
 
 import {UserService} from '../services/user.service';
 
@@ -15,18 +14,18 @@ export class JwtHttpInterceptor implements HttpInterceptor {
 
   constructor(private jwtService: JwtService,
               private refreshTokenService: RefreshTokenService,
-              private googleSignInService: ApiGoogleSignInService,
               private userService: UserService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const self = this;
 
     return new Observable<HttpEvent<any>>(subscriber => {
       // first try for the request
-      if (!(req.url.match('(.)*googleSignin(.)*') && req.url.match( '(.)*refreshToken(.)*'))) {
+      if (!(req.url.match('(.)*googleSignin(.)*') || req.url.match( '(.)*refreshToken(.)*'))) {
         req = req.clone({
           headers: req.headers.set('Authorization', 'Bearer ' + this.jwtService.getToken())
         });
       }
+
       next.handle(req)
         .subscribe((event: HttpEvent<any>) => {
           if (event instanceof HttpResponse) {

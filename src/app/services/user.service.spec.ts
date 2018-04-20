@@ -53,14 +53,14 @@ describe('UserService', () => {
       }
     };
 
-  /*  const mockUserRole = {
-      role: 'someRole'
+    const mockUserRole = {
+      role: UserRole.ROLES.USER.toString()
     };
-*/
+
   const mockPrivilegeService = {
     getUserPrivilege: function() {
       return new Observable(observer => {
-        observer.next(UserRole.ROLES.USER);
+        observer.next(mockUserRole);
       });
     },
     clearUserPrivilege: function() {}
@@ -131,7 +131,7 @@ describe('UserService', () => {
       expect(jwtService.setRefreshToken).toHaveBeenCalledWith('456');
       const user: User = service.getCurrentUser();
       expect(user.isUserLoggedIn()).toBe(true);
-      expect(user.getUserRole()).toEqual(UserRole.ROLES.USER);
+      expect(user.getUserRole().role).toEqual(UserRole.ROLES.USER);
       expect(router.navigate).toHaveBeenCalledWith(['someUrl']);
   }));
 
